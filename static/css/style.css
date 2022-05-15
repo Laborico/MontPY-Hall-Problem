@@ -1,0 +1,47 @@
+:root {
+    --orange: #f89e4f;
+    --purple: #9253a1;
+    --red: #f16164;
+}
+
+body{
+    width: 100%;
+    max-width: 80rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+}
+
+#doors {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.door-container {
+    width: 8rem;
+    height: 12rem;
+    position: relative;
+}
+
+.door {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  
+    background-color: var(--orange);
+    border: 0 solid black;
+    transform-origin: left;
+    transition: transform 0.3s ease-in-out;
+    cursor: pointer;
+  
+    z-index: 42;
+    font-size: 3rem;
+}

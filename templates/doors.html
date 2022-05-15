@@ -1,0 +1,13 @@
+{% set classes = 'door-container' %}
+{% if door_amount > 10%}
+    {% set classes = classes + ' small'%}
+{% endif %}
+
+
+{% for i in range(door_amount) %}
+    <div class ="{{ classes }}" index={{ i }}>
+        <div class="door">
+         {{ i + 1}}
+        </div>
+    </div>
+{% endfor %}
