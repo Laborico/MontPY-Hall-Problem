@@ -45,3 +45,49 @@ body{
     z-index: 42;
     font-size: 3rem;
 }
+
+.content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem;
+}
+
+.door-container.revealed > .door {
+    transform: perspective(1200px) translateZ(0px) translateX(0px) translateY(0px)
+      rotateY(-85deg);
+    cursor: default;
+}
+  
+
+.door-container.picked > .door {
+    border-width: 5px;
+}
+  
+.door-container.picked > .content::after {
+    content: '\e97f';
+    font-size: 1.4rem;
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
+    color: crimson;
+}
+  
+.door-container.picked.won > .content::after {
+    color: forestgreen;
+}
+
+.door-container.small {
+    width: 4rem;
+    height: 6rem;
+}
+  
+.door-container.small > .door {
+    font-size: 1.5rem;
+}
+  
+.door-container.small > .content {
+    font-size: 2rem;
+}

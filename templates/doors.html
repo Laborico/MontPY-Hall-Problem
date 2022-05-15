@@ -5,9 +5,15 @@
 
 
 {% for i in range(door_amount) %}
-    <div class ="{{ classes }}" index={{ i }}>
+    <div class ="{{ classes }}" id={{ i }} onclick="server.pickdoor({{i}})">
         <div class="door">
          {{ i + 1}}
         </div>
+
+        <div class="content" prize={{ i }}></div>
     </div>
 {% endfor %}
+
+<script> 
+    server.reset()
+</script>
