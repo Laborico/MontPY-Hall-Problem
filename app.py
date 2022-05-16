@@ -1,22 +1,21 @@
+import enum
 import jyserver.Flask as jsf
 from random import randint
 from flask import Flask, render_template
 
 app = Flask(__name__)
 
-door_amount = 3
+door_amount = 30
 state = 'PICK'
-doors = []
 options = []
+winner_index = 0
 @jsf.use(app) # Connect Flask object to JyServer
 class App:
     
     def start(self):
         global state
-        global doors
-        doors = ['🐐' for i in range(door_amount)]
-        winner = randint(0, door_amount-1)
-        doors[winner] = '🚂'
+        global winner_index
+        winner_index = randint(1, door_amount-1)
         
         state = 'PICK'
         
@@ -40,9 +39,9 @@ class App:
     def reveal(self, id):
         global options
         options = []
-        for i, value in enumerate(doors):
-            if i+1!= id and value != '🚂':
-                options.append(i + 1)
+        for i in range(1, door_amount + 1):
+            if i!= id and i!= winner_index:
+                options.append(i )
         
         #player selected correct door
         if len(options) == door_amount -1:
@@ -52,7 +51,7 @@ class App:
         for revealdoor in options:
             tag = '[prize="'+str(revealdoor)+'"]'
             self.js.document.getElementById(revealdoor).classList.add("revealed")
-            self.js.document.querySelector(tag).innerHTML = doors[revealdoor-1]
+            self.js.document.querySelector(tag).innerHTML = '🐐'
             
         
         last_door = self.js.document.querySelector(".door-container:not(.revealed):not(.picked)").id
@@ -81,12 +80,49 @@ class App:
         self.check_win()
         
     def check_win(self):
-        for door in range(1,door_amount + 1):
-            self.js.document.getElementById(door).classList.add("revealed")
-            tag = '[prize="'+str(door)+'"]'
-            self.js.document.getElementById(door).classList.add("revealed")
-            self.js.document.querySelector(tag).innerHTML = doors[door-1]
+        door1 = self.js.document.querySelector(".door-container:not(.revealed):not(.picked)").id
+        if door1 == str(winner_index):
+            door1 = self.js.document.querySelector(".door-container:not(.revealed):not(.picked)").id
             
+            tag = '[prize="'+str(door1)+'"]'
+            
+            door1 = self.js.document.querySelector(".door-container:not(.revealed):not(.picked)").id
+            self.js.document.getElementById(door1).classList.add("revealed")
+            
+            #sets emoji to winner door
+            self.js.document.querySelector(tag).innerHTML = '🚂'
+            
+            #sets emoji to loser door
+            door2 = self.js.document.querySelector(".door-container:not(.revealed):is(.picked)").id
+            
+            tag = '[prize="'+str(door2)+'"]'
+            
+            door2 = self.js.document.querySelector(".door-container:not(.revealed):is(.picked)").id
+            self.js.document.getElementById(door2).classList.add("revealed")
+            
+            self.js.document.querySelector(tag).innerHTML = '🐐'
+        else:
+            door1 = self.js.document.querySelector(".door-container:not(.revealed):not(.picked)").id
+            
+            tag = '[prize="'+str(door1)+'"]'
+            
+            door1 = self.js.document.querySelector(".door-container:not(.revealed):not(.picked)").id
+            self.js.document.getElementById(door1).classList.add("revealed")
+            
+            #sets emoji to loser door
+            self.js.document.querySelector(tag).innerHTML = '🐐'
+            
+            #sets emoji to winner door
+            door2 = self.js.document.querySelector(".door-container:not(.revealed):is(.picked)").id
+            
+            tag = '[prize="'+str(door2)+'"]'
+            
+            door2 = self.js.document.querySelector(".door-container:not(.revealed):is(.picked)").id
+            self.js.document.getElementById(door2).classList.add("revealed")
+            
+            self.js.document.querySelector(tag).innerHTML = '🚂'
+
+        
         current_door = self.js.document.querySelector(".door-container.picked > .content").innerHTML
         
         if current_door == '🚂':
