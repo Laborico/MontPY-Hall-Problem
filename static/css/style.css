@@ -4,6 +4,10 @@
     --red: #f16164;
 }
 
+.hidden {
+    visibility: hidden;
+}
+
 body{
     width: 100%;
     max-width: 80rem;
@@ -12,6 +16,26 @@ body{
     flex-direction: column;
     align-items: center;
     padding: 2rem;
+}
+
+button {
+    all: unset;
+    height: 40px;
+    padding: 0 25px;
+    color: white;
+    background-color: var(--purple);
+    border-radius: 2rem;
+    cursor: pointer;
+    user-select: none;
+}
+  
+button:hover {
+    opacity: 0.8;
+}
+  
+p {
+    font-size: 1.8rem;
+    margin: 1rem 0;
 }
 
 #doors {
@@ -90,4 +114,23 @@ body{
   
 .door-container.small > .content {
     font-size: 2rem;
+}
+
+#instruction {
+    margin: 2rem 0;
+    min-height: 120px;
+}
+  
+#instruction > p {
+    font-weight: bold;
+    text-align: center;
+}
+  
+#instruction > .choices {
+    text-align: center;
+    display: block;
+}
+  
+#instruction > .choices > button:last-child {
+    margin-left: 1rem;
 }

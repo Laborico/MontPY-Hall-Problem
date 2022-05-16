@@ -11,5 +11,19 @@
     <div id="doors">
         {% include 'doors.html' %}
     </div>
+
+    <div id="instruction">
+        <p>Pick a Door!</p>
+        <div class="choices" id="choices">
+            <button id="yes" onclick="server.choose_door(true)">YES</button>
+            <button id="no" onclick="server.choose_door(false)">NO</button>
+        </div>
+        <button id="play-again" onclick="server.reset()">PLAY AGAIN?</button>
+    </div>
+
+    <script> 
+        server.start()
+    </script>
 </body>
+
 </html>

@@ -1,19 +1,15 @@
 {% set classes = 'door-container' %}
-{% if door_amount > 10%}
+{% if door_amount > 10 %}
     {% set classes = classes + ' small'%}
 {% endif %}
 
 
-{% for i in range(door_amount) %}
+{% for i in range(1, door_amount + 1) %}
     <div class ="{{ classes }}" id={{ i }} onclick="server.pickdoor({{i}})">
         <div class="door">
-         {{ i + 1}}
+         {{ i }}
         </div>
 
         <div class="content" prize={{ i }}></div>
     </div>
 {% endfor %}
-
-<script> 
-    server.reset()
-</script>
