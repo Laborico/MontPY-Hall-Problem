@@ -5,10 +5,17 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 
-door_amount = 30
+door_amount = 3
 state = 'PICK'
 options = []
 winner_index = 0
+stats = {
+  "totalSwitchPlays": 0,
+  "totalStayPlays": 0,
+  "totalSwitchWins": 0,
+  "totalStayWins": 0,
+}
+
 @jsf.use(app) # Connect Flask object to JyServer
 class App:
     
@@ -28,6 +35,7 @@ class App:
             self.js.document.getElementById(i).classList.remove("revealed")
             self.js.document.getElementById(i).classList.remove("picked")
             self.js.document.getElementById(i).classList.remove("won")
+            self.js.document.getElementById(i).classList.remove("new")
         
         self.js.document.querySelector("#instruction > p").innerHTML = "Pick a Door!"
         
@@ -64,6 +72,7 @@ class App:
         self.js.document.getElementById("choices").classList.add("hidden")
         
         if switched:
+            stats["totalSwitchPlays"]+=1
             """
                 jyserver does not save the results of each query to a varible
                 once a new query is done, all the varibles that had a query asign 
@@ -76,10 +85,13 @@ class App:
             
             last_door = self.js.document.querySelector(".door-container:not(.revealed):not(.new)").id
             self.js.document.getElementById(last_door).classList.remove("picked")
+        else:
+            stats["totalStayPlays"]+=1
             
-        self.check_win()
+            
+        self.check_win(switched)
         
-    def check_win(self):
+    def check_win(self, switched):
         door1 = self.js.document.querySelector(".door-container:not(.revealed):not(.picked)").id
         if door1 == str(winner_index):
             door1 = self.js.document.querySelector(".door-container:not(.revealed):not(.picked)").id
@@ -127,12 +139,34 @@ class App:
         
         if current_door == '🚂':
             self.js.document.querySelector("#instruction > p").innerHTML = "You Win:D!"
+            
+            if switched:
+                stats["totalSwitchWins"] +=1
+            else:
+                stats["totalStayWins"]+=1
         else:
             self.js.document.querySelector("#instruction > p").innerHTML = "You Lose:C!"
             
         self.js.document.getElementById("play-again").classList.remove("hidden")
         
-        self.js.document.getElementById("play-again").classList.remove("hidden")
+        self.update_stats()
+            
+        
+    def update_stats(self):
+        switch_win_rates = (100 * stats["totalSwitchWins"]) / (stats["totalSwitchPlays"] if stats["totalSwitchPlays"] > 0 else 1)
+        switch_win_rates = f'{switch_win_rates:.2f}' + "%"
+        
+        
+        self.js.document.querySelector('#stats #switches .total').innerHTML = stats["totalSwitchPlays"]
+        self.js.document.querySelector('#stats #switches .bar').style.width = switch_win_rates
+        self.js.document.querySelector('#stats #switches .bar .win-rate').innerHTML = switch_win_rates
+        
+        switch_stay_rates = (100 * stats["totalStayWins"]) / (stats["totalStayPlays"] if stats["totalStayPlays"] > 0 else 1)
+        switch_stay_rates = f'{switch_stay_rates:.2f}' + "%"
+        
+        self.js.document.querySelector('#stats #stays .total').innerHTML = stats["totalStayPlays"]
+        self.js.document.querySelector('#stats #stays .bar').style.width = switch_stay_rates
+        self.js.document.querySelector('#stats #stays .bar .win-rate').innerHTML = switch_stay_rates
         
 
         

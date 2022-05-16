@@ -21,6 +21,21 @@
         <button id="play-again" onclick="server.reset()">PLAY AGAIN?</button>
     </div>
 
+    <div id="stats">
+        <div id="switches">
+            <p>Total Switches: <span class="total">0</span></p>
+            <div class="bar">
+                <span class="win-rate">0%</span>
+            </div>
+        </div>
+        <div id="stays">
+            <p>Total Stays: <span class="total">0</span></p>
+            <div class="bar">
+                <span class="win-rate">0%</span>
+            </div>
+        </div>
+    </div>
+
     <script> 
         server.start()
     </script>
