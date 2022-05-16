@@ -25,7 +25,7 @@ class App:
         
     def reset(self):
         self.start()
-        for i in range(door_amount):
+        for i in range(1, door_amount + 1):
             self.js.document.getElementById(i).classList.remove("revealed")
             self.js.document.getElementById(i).classList.remove("picked")
             self.js.document.getElementById(i).classList.remove("won")
@@ -86,6 +86,19 @@ class App:
             tag = '[prize="'+str(door)+'"]'
             self.js.document.getElementById(door).classList.add("revealed")
             self.js.document.querySelector(tag).innerHTML = doors[door-1]
+            
+        current_door = self.js.document.querySelector(".door-container.picked > .content").innerHTML
+        
+        if current_door == '🚂':
+            self.js.document.querySelector("#instruction > p").innerHTML = "You Win:D!"
+        else:
+            self.js.document.querySelector("#instruction > p").innerHTML = "You Lose:C!"
+            
+        self.js.document.getElementById("play-again").classList.remove("hidden")
+        
+        self.js.document.getElementById("play-again").classList.remove("hidden")
+        
+
         
 
 @app.route("/")
