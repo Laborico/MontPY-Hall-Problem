@@ -12,6 +12,7 @@ stats = {
   "totalSwitchWins": 0,
   "totalStayWins": 0,
 }
+automode = False
 
 @jsf.use(app) # Connect Flask object to JyServer
 class App:
@@ -35,10 +36,27 @@ class App:
         
         self.js.document.querySelector("#instruction > p").innerHTML = "Pick a Door!"
         
+        if automode:
+            picked = randint(1, door_amount-1)
+            self.pickdoor(picked)
+        
+    def automode(self):
+        global automode
+        if automode:
+            automode = False
+            self.js.document.getElementById("autorun").classList.remove("on")
+        else:
+            automode = True
+            self.js.document.getElementById("autorun").classList.add("on")
+            picked = randint(1, door_amount-1)
+            self.pickdoor(picked)
 
     def pickdoor(self, id):
-        self.js.document.getElementById(id).classList.add("picked")
-        self.reveal(id)
+        global state
+        if state == 'PICK':
+            self.js.document.getElementById(id).classList.add("picked")
+            state = 'REVEAL'
+            self.reveal(id)
     
     def reveal(self, id):
         global options
@@ -57,12 +75,17 @@ class App:
             self.js.document.getElementById(revealdoor).classList.add("revealed")
             self.js.document.querySelector(tag).innerHTML = '🐐'
             
-        
-        last_door = self.js.document.querySelector(".door-container:not(.revealed):not(.picked)").id
-        message = "Do you want to switch to door #"+str(last_door)+"?"
-        self.js.document.querySelector("#instruction > p").innerHTML = message
-        
-        self.js.document.getElementById("choices").classList.remove("hidden")
+        if automode:
+            if randint(1,2) == 1:
+                self.choose_door(True)
+            else:
+                self.choose_door(False)    
+        else:
+            last_door = self.js.document.querySelector(".door-container:not(.revealed):not(.picked)").id
+            message = "Do you want to switch to door #"+str(last_door)+"?"
+            self.js.document.querySelector("#instruction > p").innerHTML = message
+            
+            self.js.document.getElementById("choices").classList.remove("hidden")
     
     def choose_door(self, switched):
         self.js.document.getElementById("choices").classList.add("hidden")
@@ -83,7 +106,7 @@ class App:
             self.js.document.getElementById(last_door).classList.remove("picked")
         else:
             stats["totalStayPlays"]+=1
-            
+        
             
         self.check_win(switched)
         
@@ -164,3 +187,5 @@ class App:
         self.js.document.querySelector('#stats #stays .bar').style.width = switch_stay_rates
         self.js.document.querySelector('#stats #stays .bar .win-rate').innerHTML = switch_stay_rates
         
+        if automode:
+            self.reset()
