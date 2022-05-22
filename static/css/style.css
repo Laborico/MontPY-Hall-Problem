@@ -59,7 +59,6 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-  
     background-color: var(--orange);
     border: 0 solid black;
     transform-origin: left;
@@ -90,7 +89,7 @@ p {
 }
   
 .door-container.picked > .content::after {
-    content: '\e97f';
+    content: '🔺';
     font-size: 1.4rem;
     position: absolute;
     left: 50%;
@@ -160,4 +159,37 @@ p {
     right: 0;
     top: 50%;
     transform: translate(120%, -50%);
+}
+
+#controls {
+    position: fixed;
+    top: 0;
+    right: 0;
+    padding: 2rem;
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1rem;
+}
+
+#controls h3 {
+    margin: 0;
+    font-size: 1.4rem;
+}
+
+#controls > select {
+    display: block;
+    margin: 0.5rem 0;
+}
+
+#controls > #autorun::before {
+    content: '▶️';
+    display: inline-block;
+    margin-right: 0.5rem;
+    width: 1rem;
+}
+
+#controls > #autorun.on::before {
+    content: '⏸';
 }

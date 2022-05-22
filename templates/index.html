@@ -36,6 +36,24 @@
         </div>
     </div>
 
+
+    <div id="controls">
+        <h3>Options</h3>
+        <label>
+            # of doors:&nbsp;
+            <select id="nb-doors" autocomplete="off">
+                <option value="3" selected>3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+            </select>
+        </label>
+        <button id="autorun" class="play">Auto run</button>
+        <input type="range" id="speed-slider" min="20" max="1000" value="500" step="1" /> 
+    </div>
+
     <script> 
         server.start()
     </script>
